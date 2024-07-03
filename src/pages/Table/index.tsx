@@ -105,18 +105,9 @@ const TableList: React.FC<unknown> = () => {
       },
     },
     {
-      title: '昵称',
+      title: '金额',
       dataIndex: 'nickName',
       valueType: 'text',
-    },
-    {
-      title: '性别',
-      dataIndex: 'gender',
-      hideInForm: true,
-      valueEnum: {
-        0: { text: '男', status: 'MALE' },
-        1: { text: '女', status: 'FEMALE' },
-      },
     },
     {
       title: '操作',
@@ -142,7 +133,7 @@ const TableList: React.FC<unknown> = () => {
   return (
     <PageContainer
       header={{
-        title: 'CRUD 示例',
+        title: '开云记数表',
       }}
     >
       <ProTable<API.UserInfo>
@@ -161,19 +152,19 @@ const TableList: React.FC<unknown> = () => {
             新建
           </Button>,
         ]}
-        request={async (params, sorter, filter) => {
-          const { data, success } = await queryUserList({
-            ...params,
-            // FIXME: remove @ts-ignore
-            // @ts-ignore
-            sorter,
-            filter,
-          });
-          return {
-            data: data?.list || [],
-            success,
-          };
-        }}
+        // request={async (params, sorter, filter) => {
+        //   const { data, success } = await queryUserList({
+        //     ...params,
+        //     // FIXME: remove @ts-ignore
+        //     // @ts-ignore
+        //     sorter,
+        //     filter,
+        //   });
+        //   return {
+        //     data: data?.list || [],
+        //     success,
+        //   };
+        // }}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),

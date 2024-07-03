@@ -25,6 +25,21 @@ export default defineConfig({
       component: './Access',
     },
     {
+      name: '虚拟滚动',
+      path: '/virtualScroll',
+      component: './VirtualScroll',
+    },
+    {
+      name: '自适应列宽',
+      path: '/adaptiveColumnWidth',
+      component: './AdaptiveColumnWidth',
+    },
+    {
+      name: '开云记数表',
+      path: '/numerationTable',
+      component: './NumerationTable',
+    },
+    {
       name: ' CRUD 示例',
       path: '/table',
       component: './Table',
