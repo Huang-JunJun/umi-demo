@@ -35,6 +35,11 @@ export default defineConfig({
       component: './AdaptiveColumnWidth',
     },
     {
+      name: '数据图表',
+      path: '/dataChart',
+      component: './DataChart',
+    },
+    {
       name: '开云记数表',
       path: '/numerationTable',
       component: './NumerationTable',

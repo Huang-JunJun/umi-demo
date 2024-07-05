@@ -21,9 +21,7 @@ type PropsType = {
 const RecordModal = (props: PropsType) => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>(() => []);
   const { recordId, modalVisible, defaultData, recordName, onCancel } = props;
-  const [position, setPosition] = useState<'top' | 'bottom' | 'hidden'>(
-    'bottom',
-  );
+  const [position, setPosition] = useState<'top' | 'bottom' | 'hidden'>('top');
   const [controlled, setControlled] = useState<boolean>(false);
   const [winSum, setWinSum] = useState<number>(0);
   const formRef = useRef<ProFormInstance<any>>();
@@ -134,13 +132,14 @@ const RecordModal = (props: PropsType) => {
           编辑
         </a>,
         <Popconfirm
+          key="delPop"
           title={'删除'}
           description="确认删除吗?"
           onConfirm={() => handleDelete(record.id)}
           okText="确认"
           cancelText="取消"
         >
-          <a key="delete">删除</a>
+          <a key="del">删除</a>
         </Popconfirm>,
       ],
     },

@@ -12,8 +12,7 @@ import React, { useRef, useState } from 'react';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 
-const { addUser, queryUserList, deleteUser, modifyUser } =
-  services.UserController;
+const { addUser, deleteUser, modifyUser } = services.UserController;
 
 /**
  * 添加节点

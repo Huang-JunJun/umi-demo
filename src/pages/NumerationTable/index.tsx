@@ -139,10 +139,11 @@ const NumerationTable: React.FC = () => {
 
     if (data && JSON.stringify(data) !== JSON.stringify(tableData)) {
       data.forEach((item) => {
-        item.waitMoney = item.startMoney + item.settledMoney + item.money;
+        item.waitMoney = item.startMoney - item.settledMoney + item.money;
       });
       setTableData(data);
     }
+    localStorage.setItem('list', JSON.stringify(data));
   };
 
   const handleModalVisible = (flag: boolean) => {
