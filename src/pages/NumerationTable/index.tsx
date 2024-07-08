@@ -69,13 +69,6 @@ const NumerationTable: React.FC = () => {
         },
       },
       sorter: (a: any, b: any) => a.waitMoney - b.waitMoney,
-      // render: (_: any, record: any) => {
-      //   const waitMoney =
-      //     record.waitMoney >= 0
-      //       ? record.startMoney - record.settledMoney + record.money
-      //       : record.startMoney + record.settledMoney + record.money;
-      //   return '¥' + waitMoney.toFixed(2);
-      // },
     },
     {
       title: '初始金额',
@@ -87,6 +80,20 @@ const NumerationTable: React.FC = () => {
         },
       },
       sorter: (a: any, b: any) => a.startMoney - b.startMoney,
+    },
+    {
+      title: '下注次数',
+      dataIndex: 'betTimes',
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      valueEnum: {
+        // close: { text: '已清', status: 'Default' },
+        running: { text: '存在待结算订单', status: 'Processing' },
+        close: { text: '无待结算订单', status: 'Default' },
+        // wait: { text: '待结算', status: 'Error' },
+      },
     },
     {
       title: '操作',
@@ -140,9 +147,18 @@ const NumerationTable: React.FC = () => {
     if (data && JSON.stringify(data) !== JSON.stringify(tableData)) {
       data.forEach((item) => {
         item.waitMoney = item.startMoney - item.settledMoney + item.money;
+        item.betTimes = item.recordTableData.length;
+        if (item.recordTableData.length > 0) {
+          if (item.recordTableData.some((i: any) => i.state === 'wait')) {
+            item.status = 'running';
+          } else {
+            item.status = 'close';
+          }
+        }
       });
       setTableData(data);
     }
+
     localStorage.setItem('list', JSON.stringify(data));
   };
 

@@ -254,6 +254,10 @@ const RecordModal = (props: PropsType) => {
               localStorage.setItem('list', JSON.stringify(data));
             },
             onDelete: async (key: any, record: any) => handleDelete(key),
+            actionRender: (row, config, defaultDom) => [
+              defaultDom.save,
+              defaultDom.delete,
+            ],
           }}
         />
       </ProForm>

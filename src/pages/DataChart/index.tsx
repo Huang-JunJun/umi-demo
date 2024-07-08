@@ -1,6 +1,6 @@
 import Ranking from '@/components/Ranking/Ranking';
 import { findMax, findMin } from '@/utils/utils';
-import { Bar } from '@ant-design/plots';
+import { Column } from '@ant-design/charts';
 import { PageContainer, ProCard } from '@ant-design/pro-components';
 import { Statistic } from 'antd';
 import RcResizeObserver from 'rc-resize-observer';
@@ -19,27 +19,38 @@ const DataChart: React.FC = () => {
   const [minBetKing, setMinBetKing] = useState('');
   const [itemList, setItemList] = useState<any[]>([]);
 
-  const BetBar = () => {
+  const BetColumn = () => {
     const config = {
-      title: '胜率排行',
-      data: itemList,
+      title: '胜率/回报率指数',
+      data: itemList
+        .map((item) => {
+          return {
+            name: item.name,
+            rateType: '胜率',
+            rate: item.winRate,
+          };
+        })
+        .concat(
+          itemList.map((item) => {
+            return {
+              name: item.name,
+              rateType: '回报率',
+              rate: item.returnRate,
+            };
+          }),
+        ),
       xField: 'name',
-      yField: 'winRate',
-      color: (datum: any) => {
-        // 根据 winRate 设置不同的颜色
-        if (datum > 0.5) {
-          return '#28a745'; // 绿色
-        } else if (datum > 0.2) {
-          return '#ffc107'; // 黄色
-        } else {
-          return '#dc3545'; // 红色
-        }
-      },
+      yField: 'rate',
+      colorField: 'rateType',
+      group: true,
       label: {
-        text: 'winRate',
+        text: 'rate',
         formatter: (datum: any) => {
           return datum === 0 ? '' : `${(datum * 100).toFixed(1)}%`;
         },
+      },
+      style: {
+        inset: 5,
       },
       axis: {
         y: {
@@ -47,7 +58,7 @@ const DataChart: React.FC = () => {
         },
       },
     };
-    return <Bar {...config} />;
+    return <Column {...config} />;
   };
 
   useEffect(() => {
@@ -62,23 +73,35 @@ const DataChart: React.FC = () => {
     setBetKing(king);
 
     let sum = 0;
+    // 总下注金额
     let recordMoney = 0;
+    // 赢的次数
     let winSum = 0;
+    // 赢的总金额
+    let winMoneySum = 0;
+    // 总结算金额
+    let settleMoneySum = 0;
     const list: any[] = [];
     data.forEach((item) => {
       sum = sum + item.money;
       item.recordTableData.forEach((k: any) => {
         recordMoney = recordMoney + k.money;
+        settleMoneySum = settleMoneySum + k.settleMoney;
         if (k.state === 'win') {
           winSum++;
+          winMoneySum = winMoneySum + k.money;
         }
       }),
         list.push({
           recordMoney: recordMoney,
           name: item.name,
           winRate: winSum / item.recordTableData.length,
+          returnRate: (recordMoney + settleMoneySum) / recordMoney,
           money: item.money,
         });
+
+      settleMoneySum = 0;
+      winMoneySum = 0;
       recordMoney = 0;
       winSum = 0;
     });
@@ -146,7 +169,8 @@ const DataChart: React.FC = () => {
                 <Ranking data={dataList}></Ranking>
               </ProCard>
               <ProCard colSpan={'70%'}>
-                <BetBar></BetBar>
+                <BetColumn></BetColumn>
+                {/* <BetBar></BetBar> */}
               </ProCard>
             </ProCard.Group>
           </ProCard.Group>
