@@ -49,6 +49,16 @@ export default defineConfig({
       path: '/table',
       component: './Table',
     },
+    {
+      name: 'echarts图表',
+      path: '/echarts',
+      component: './Echarts',
+    },
+    {
+      name: 'indexDB数据库',
+      path: '/indexedDB',
+      component: './IndexedDB',
+    },
   ],
   npmClient: 'yarn',
 });
