@@ -211,10 +211,10 @@ const RecordModal = (props: PropsType) => {
           rowKey="id"
           scroll={{
             x: 960,
-            y: 400,
+            y: 600,
           }}
           style={{
-            height: 500,
+            height: 700,
           }}
           editableFormRef={editorFormRef}
           name="table"

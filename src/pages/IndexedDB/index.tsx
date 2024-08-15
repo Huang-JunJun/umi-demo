@@ -55,8 +55,8 @@ const IndexedDBPage: React.FC = () => {
       tableName: tableName,
       data: [
         {
-          key: 'hxj',
-          name: 'huangxianjun',
+          key: 'lilili',
+          name: [{ name: 'hxj' }, { name: 'zhangsan' }],
           age: 38,
         },
       ],

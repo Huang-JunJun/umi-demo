@@ -71,17 +71,6 @@ const NumerationTable: React.FC = () => {
       sorter: (a: any, b: any) => a.waitMoney - b.waitMoney,
     },
     {
-      title: '初始金额',
-      dataIndex: 'startMoney',
-      valueType: 'money',
-      fieldProps: {
-        style: {
-          width: '100%',
-        },
-      },
-      sorter: (a: any, b: any) => a.startMoney - b.startMoney,
-    },
-    {
       title: '下注次数',
       dataIndex: 'betTimes',
     },
@@ -89,10 +78,8 @@ const NumerationTable: React.FC = () => {
       title: '状态',
       dataIndex: 'status',
       valueEnum: {
-        // close: { text: '已清', status: 'Default' },
         running: { text: '存在待结算订单', status: 'Processing' },
         close: { text: '无待结算订单', status: 'Default' },
-        // wait: { text: '待结算', status: 'Error' },
       },
     },
     {
@@ -146,7 +133,7 @@ const NumerationTable: React.FC = () => {
 
     if (data && JSON.stringify(data) !== JSON.stringify(tableData)) {
       data.forEach((item) => {
-        item.waitMoney = item.startMoney - item.settledMoney + item.money;
+        item.waitMoney = item.money-item.settledMoney;
         item.betTimes = item.recordTableData.length;
         if (item.recordTableData.length > 0) {
           if (item.recordTableData.some((i: any) => i.state === 'wait')) {
