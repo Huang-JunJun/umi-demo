@@ -5,14 +5,13 @@ import { PageContainer, ProCard } from '@ant-design/pro-components';
 import { Statistic } from 'antd';
 import RcResizeObserver from 'rc-resize-observer';
 import { useEffect, useState } from 'react';
-import { tableProp } from '../NumerationTable/type';
 import './styles.less'; // 引入定义的CSS样式文件
 
 const { Divider } = ProCard;
 
 const DataChart: React.FC = () => {
   const [responsive, setResponsive] = useState(false);
-  const [dataList, setDataList] = useState<tableProp[]>([]);
+  const [dataList, setDataList] = useState<any[]>([]);
   const [betKing, setBetKing] = useState('');
   const [sumMoney, setSumMoney] = useState(0);
   const [maxBetKing, setMaxBetKing] = useState('');

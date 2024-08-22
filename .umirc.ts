@@ -40,11 +40,6 @@ export default defineConfig({
       component: './DataChart',
     },
     {
-      name: '开云记数表',
-      path: '/numerationTable',
-      component: './NumerationTable',
-    },
-    {
       name: ' CRUD 示例',
       path: '/table',
       component: './Table',
