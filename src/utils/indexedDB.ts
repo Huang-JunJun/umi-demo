@@ -56,6 +56,8 @@ export class TsIndexDb {
   private static _instance: TsIndexDb | null = null;
 
   public static getInstance(dbOptions?: IIndexDb): TsIndexDb {
+    console.log('TsIndexDb', TsIndexDb._instance);
+
     if (TsIndexDb._instance === null && dbOptions) {
       TsIndexDb._instance = new TsIndexDb(dbOptions);
     }
@@ -340,6 +342,9 @@ export class TsIndexDb {
    */
   open_db() {
     return new Promise<TsIndexDb>((resolve, reject) => {
+      debugger;
+      console.log('this.version', this.version);
+
       const request = window.indexedDB.open(this.dbName, this.version);
       request.onerror = (e) => {
         reject(e);
@@ -360,11 +365,12 @@ export class TsIndexDb {
         resolve(this);
       };
       //数据库升级
-      request.onupgradeneeded = (e) => {
+      request.onupgradeneeded = (e: any) => {
         this.tableList.forEach((element: DbTable) => {
           this.create_table((e.target as any).result, element);
         });
         console.log('已更新');
+        console.log('this.dbthis.db', this.db);
       };
     });
   }
@@ -417,6 +423,46 @@ export class TsIndexDb {
         resolve();
       },
     );
+  }
+
+  /**
+   * @method 新增表数据
+   * @param {String}name 数据库名称
+   */
+  add_table(tableName: string) {
+    return new Promise((resolve, reject) => {
+      try {
+        console.log('this.db.this.this.db', this.db);
+        if (this.db) {
+          this.tableList = Array.from(this.tableList).map((item) => {
+            return {
+              tableName: item,
+              keyPath: 'key',
+            };
+          }) as unknown as DbTable[];
+
+          this.tableList.push({
+            tableName: tableName,
+            option: { keyPath: 'key' },
+            indexs: [
+              { key: 'key', option: { unique: false } },
+              { key: 'age', option: { unique: false } },
+              { key: 'name', option: { unique: false } },
+            ],
+          }) as any;
+        }
+
+        this.version = this.db?.version + 1;
+
+        console.log('this.tableList', this.tableList);
+        console.log('this.this.version', this.version);
+        this.close_db().then(() => {
+          resolve(true);
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
 
   /**

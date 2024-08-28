@@ -5,9 +5,17 @@ export default defineConfig({
   access: {},
   model: {},
   initialState: {},
-  request: {},
+  request: {
+    dataField: 'data',
+  },
   layout: {
     title: '@umijs/max',
+  },
+  proxy: {
+    '/api': {
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    },
   },
   routes: [
     {
@@ -53,6 +61,11 @@ export default defineConfig({
       name: 'indexDB数据库',
       path: '/indexedDB',
       component: './IndexedDB',
+    },
+    {
+      name: '前端多请求并发操作',
+      path: '/multipleRequest',
+      component: './MultipleRequest',
     },
   ],
   npmClient: 'yarn',

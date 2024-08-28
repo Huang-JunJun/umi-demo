@@ -5,10 +5,9 @@ import { useEffect, useState } from 'react';
 
 const IndexedDBPage: React.FC = () => {
   const [tableName, setTableName] = useState<string>('');
-  const db = TsIndexDb.getInstance({
+  let db = TsIndexDb.getInstance({
     dbName: 'mysql',
   });
-
   useEffect(() => {
     init();
   }, []);
@@ -26,28 +25,17 @@ const IndexedDBPage: React.FC = () => {
     });
   };
 
-  const addTable = async () => {
-    const db = TsIndexDb.getInstance({
-      dbName: 'mysql',
-    });
+  const addTable = async (tableName: string) => {
+    console.log('db.db', db);
 
     if (db.db) {
-      db.tableList = formatTable(Array.from(db.tableList)).concat([
-        {
-          tableName: 'person',
-          option: { keyPath: 'key' },
-          indexs: [
-            { key: 'key', option: { unique: false } },
-            { key: 'age', option: { unique: false } },
-            { key: 'name', option: { unique: false } },
-          ],
-        },
-      ]);
-
-      db.version = db.db.version + 1;
-      await db.close_db();
-      await db.open_db();
+      await db.add_table(tableName).then(() => {
+        db = TsIndexDb.getInstance({
+          dbName: 'mysql',
+        });
+      });
     }
+    await db.open_db();
   };
 
   const addTableData = async (tableName: string) => {
@@ -146,7 +134,7 @@ const IndexedDBPage: React.FC = () => {
         title: 'indexDB',
       }}
     >
-      <Button onClick={() => addTable()}>添加数据表</Button>
+      <Button onClick={() => addTable(tableName)}>添加数据表</Button>
       <Input value={tableName} onChange={handleInputChange} />
       <Button onClick={() => addTableData(tableName)}>
         {tableName}表中删除数据
